@@ -12,13 +12,11 @@ def signIn(email, password):
     raise Exception("Could not to sign in")
 
 def sendSolution(token, courseId, lessonId, exerciseId, data):
-    r = requests.post("{}/app/data".format(server_url),
-                     headers = {
-                         'Authorization': 'Bearer {}'.format(token),
-                         'courseId': str(courseId),
-                         'lessonId': str(lessonId),
-                         'exerciseId': str(exerciseId)
-                     }, data=data)
+    data['courseId'] = courseId
+    data['lessonId'] = lessonId
+    data['exerciseId'] = exerciseId
+
+    r = requests.post("{}/app/data".format(server_url), headers = { 'Authorization': 'Bearer {}'.format(token) }, data=data)
     try:
         return json.loads(r.text)
     except:
